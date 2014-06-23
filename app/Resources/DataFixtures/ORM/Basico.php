@@ -30,7 +30,7 @@ class Basico implements FixtureInterface, ContainerAwareInterface {
         }
 
         $manager->flush();
-        
+
         $listas = $manager->getRepository('ListaBundle:Lista')->findAll();
 
         /* Obligaciones */
@@ -90,28 +90,82 @@ class Basico implements FixtureInterface, ContainerAwareInterface {
             array('Obligaciones trimestrales de suministro de información', '31/12', 'Le recordamos que en cumplimiento del artículo 16.8 de la Orden HAP/2105/2012 debe remitir al Ministerio  las actualizaciones de su Plan de tesorería y detalles de las operaciones de deuda viva que contendrá al menos información relativa a : - Calendario y presupuesto de Tesorería que contenga sus cobros y pagos mensuales por rúbricas incluynedo la previsión de su múnumo mensual de tesorería. - Previsión mensual de ingresos. - Saldo de deuda pública. - Impacto de medidas de ahorro y medidas de ingresos previstas y calendario previsto de impacto en presupuesto. - Vencimientos mensuales de deuda a corto y largo plazo. - Calendario y cuantías de necesidades de endeudamiento. - Evolución del salgo de las obligaciones reconocidas pendientes de pago tanto del ejercicio corriente como de los años anteriores.  - Perfil de vencimientos de la deuda de los próximos diez años. '),
             array('Obligaciones trimestrales de suministro de información', '31/12', 'Le recordamos que en cumplimiento del artículo 16.9  de la Orden HAP/2105/2012 debe remitir al Ministerio la información relativa al personal de las entidades: - Órganos estatutarios. - Retribuciones básicas, complementarias, acción social, aportaciones a planes de pensiones, cotizaciones al sistema de seguridad social a cargo del empleador e indemnizaciones. - Efectivos por clases de personal, incluyendo altos cargos. - Dotaciones o plantillas presupuestarias de personal, con el desglose orgánico.        Se remitirá información sobre los efectivos de personal: - Número de efectivos y clases de personal. - Todas las retribuciones diferenciando básicas de complementarias asignadas al personal. - El número de efectivos por modalidades de jornada.')
         );
-        
-        foreach($obligaciones_municipal as $o){
+
+        foreach ($obligaciones_municipal as $o) {
             $titulo = $o[0];
-            $array_fecha = explode("/",$o[1]);
-                $dia = $array_fecha[0];
-                $mes = $array_fecha[1];
+            $array_fecha = explode("/", $o[1]);
+            $dia = $array_fecha[0];
+            $mes = $array_fecha[1];
             $texto = $o[2];
-            
+
             $fecha = new \DateTime();
             $fecha->setDate('2014', $mes, $dia);
             $fecha->setTime(23, 59, 59);
-            
+
             $obligacion = new Obligacion();
-            
+
             $obligacion->setNombre($titulo);
             $obligacion->setTexto($texto);
             $obligacion->setFechaExpiracion($fecha);
             $obligacion->setLista($listas[0]);
-          
-            $manager->persist($obligacion);    
+
+            $manager->persist($obligacion);
         }
         
+        $manager->flush();
+
+        for ($i = 1; $i <= 10; $i++) {
+            $usuario = new Usuario();
+            $usuario->setNombre('N_usuario' . $i);
+            $usuario->setApellidos('Apellido_A' . $i . ' Apellido_B' . $i);
+            $usuario->setEntidad('Entidad_' . $i);
+            $usuario->setEmail('mail_' . $i . '@servidor.com');
+            $usuario->setPassword('contra_00' . $i);
+            $usuario->setSalt(uniqid(''));
+            $usuario->setFechaAlta(new \DateTime('now'));
+
+            $manager->persist($usuario);
+        }
+        
+        $manager->flush();
+        
+        $usuarios = $manager->getRepository('UsuarioBundle:Usuario')->findAll();
+    
+
+        $obligaciones = $manager->getRepository('ObligacionBundle:Obligacion')->findAll();
+
+
+        foreach ($usuarios as $u) {
+
+
+            foreach ($obligaciones as $o) {
+                $sm = clone $o->getFechaExpiracion();
+                $sm->sub(new \DateInterval('P7D'));
+                
+                $h48 = clone $o->getFechaExpiracion();
+                $h48->sub(new \DateInterval('P2D'));
+                
+                $h24 = clone $o->getFechaExpiracion();
+                $h24->sub(new \DateInterval('P1D'));
+                
+                
+                $avisos = array($sm,$h48,$h24);
+                
+                
+
+                foreach ($avisos as $av) {
+                    $alerta = new Alerta();
+                    $alerta->setUsuario($u);
+                    $alerta->setObligacion($o);
+                    $alerta->setFechaEnvio($av);
+                    $alerta->setCumplida(false);
+                    $alerta->setEnviada(false);
+
+                    $manager->persist($alerta);
+                }
+            }
+        }
+
         $manager->flush();
     }
 
