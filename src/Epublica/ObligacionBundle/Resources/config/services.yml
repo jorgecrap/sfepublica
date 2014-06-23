@@ -1,0 +1,7 @@
+parameters:
+#    obligacion.example.class: Epublica\ObligacionBundle\Example
+
+services:
+#    obligacion.example:
+#        class: %obligacion.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

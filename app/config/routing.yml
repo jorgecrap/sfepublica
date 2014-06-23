@@ -1,0 +1,16 @@
+lista:
+    resource: "@ListaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+alerta:
+    resource: "@AlertaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+obligacion:
+    resource: "@ObligacionBundle/Resources/config/routing.yml"
+    prefix:   /
+
+usuario:
+    resource: "@UsuarioBundle/Resources/config/routing.yml"
+    prefix:   /
+
