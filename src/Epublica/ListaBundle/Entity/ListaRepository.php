@@ -1,6 +1,6 @@
 <?php
 
-namespace Epublica\ListaRepository\Entity;
+namespace Epublica\ListaBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Epublica\ObligacionRepository\Entity;
+namespace Epublica\ObligacionBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
