@@ -1,6 +1,6 @@
 <?php
 
-namespace Cupon\AlertaBundle\Entity;
+namespace Epublica\AlertaBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

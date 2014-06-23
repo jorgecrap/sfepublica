@@ -1,6 +1,6 @@
 <?php
 
-namespace Cupon\ObligacionRepository\Entity;
+namespace Epublica\ObligacionRepository\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

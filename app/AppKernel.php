@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Epublica\ObligacionBundle\ObligacionBundle(),
             new Epublica\AlertaBundle\AlertaBundle(),
             new Epublica\ListaBundle\ListaBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

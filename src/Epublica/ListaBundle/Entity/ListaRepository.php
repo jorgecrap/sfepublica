@@ -1,6 +1,6 @@
 <?php
 
-namespace Cupon\ListaRepository\Entity;
+namespace Epublica\ListaRepository\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
